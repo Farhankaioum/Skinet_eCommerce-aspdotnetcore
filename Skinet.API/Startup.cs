@@ -19,10 +19,12 @@ namespace Skinet.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionStringName = "DefaultConnection";
+            var connectionString = Configuration.GetConnectionString(connectionStringName);
+            var migrationAssemblyName = typeof(StoreContext).Assembly.FullName;
+
             services.AddDbContext<StoreContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            });
+                options.UseSqlServer(connectionString, b => b.MigrationsAssembly(migrationAssemblyName)));
 
             services.AddControllers();
         }
