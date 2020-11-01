@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Skinet.Core.Interfaces;
 using Skinet.Infrastucture.Data;
 
 namespace Skinet.API.Controllers
@@ -15,6 +16,7 @@ namespace Skinet.API.Controllers
     public class ProductController : ControllerBase
     {
         private readonly StoreContext _context;
+        private readonly IProductRepository repository;
 
         public ProductController(StoreContext context)
         {
