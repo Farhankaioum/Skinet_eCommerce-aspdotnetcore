@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Skinet.API.Data;
+using Skinet.Infrastucture.Data;
 
 namespace Skinet.API.Controllers
 {

@@ -3,10 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Skinet.API.Data;
 
-namespace Skinet.API.Data.Migrations
+namespace Skinet.Infrastucture.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
     [Migration("20201101133156_ProductEntityAdded")]

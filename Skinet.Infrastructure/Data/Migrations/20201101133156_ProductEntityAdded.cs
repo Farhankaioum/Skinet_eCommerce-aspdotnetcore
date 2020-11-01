@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Skinet.API.Data.Migrations
+namespace Skinet.Infrastucture.Data.Migrations
 {
     public partial class ProductEntityAdded : Migration
     {
