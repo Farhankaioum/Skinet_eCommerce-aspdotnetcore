@@ -1,8 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20201101185458_ProductProductBandProductTypeEntityModified.cs" />
+    <Compile Remove="Data\Migrations\20201101185458_ProductProductBandProductTypeEntityModified.Designer.cs" />
+    <Compile Remove="Migrations\20201101180725_ProductProductBandProductTypeEntityAdded.cs" />
+    <Compile Remove="Migrations\20201101180725_ProductProductBandProductTypeEntityAdded.Designer.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.9" />
@@ -16,6 +23,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Skinet.Core\Skinet.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

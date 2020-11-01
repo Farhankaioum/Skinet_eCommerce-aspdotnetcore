@@ -13,30 +13,29 @@ namespace Skinet.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductsController : ControllerBase
     {
-        private readonly StoreContext _context;
-        private readonly IProductRepository repository;
+        private readonly IProductRepository _repository;
 
-        public ProductController(StoreContext context)
+        public ProductsController(IProductRepository repository)
         {
-            _context = context;
+            _repository = repository;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            var datas = await _context.Products.ToListAsync();
+            var products = await _repository.GetProductsAsync();
 
-            return Ok(datas);
+            return Ok(products);
         }
 
         [HttpGet("{id}")]
         public async  Task<IActionResult> GetProductById(int id)
         {
-            var data = await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            var product = await _repository.GetProductByIdAsync(id);
 
-            return Ok(data);
+            return Ok(product);
         }
     }
 }
