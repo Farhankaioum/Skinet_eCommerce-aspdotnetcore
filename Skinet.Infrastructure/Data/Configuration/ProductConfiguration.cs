@@ -23,9 +23,9 @@ namespace Skinet.Infrastructure.Data.Configuration
                 .HasColumnType("decimal(18,2)")
                 .IsRequired();
 
-            builder.HasOne(b => b.ProductBand)
+            builder.HasOne(b => b.ProductBrand)
                 .WithMany()
-                .HasForeignKey(p => p.ProductBandId);
+                .HasForeignKey(p => p.ProductBrandId);
 
             builder.HasOne(b => b.ProductType)
                 .WithMany()

@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Skinet.Infrastucture.Data;
 
 namespace Skinet.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(StoreContext))]
-    partial class StoreContextModelSnapshot : ModelSnapshot
+    [Migration("20201102043127_RenameProductBandToProductBrand")]
+    partial class RenameProductBandToProductBrand
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,7 +44,7 @@ namespace Skinet.Infrastructure.Data.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ProductBrandId")
+                    b.Property<int>("ProductBandId")
                         .HasColumnType("int");
 
                     b.Property<int>("ProductTypeId")
@@ -50,7 +52,7 @@ namespace Skinet.Infrastructure.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductBrandId");
+                    b.HasIndex("ProductBandId");
 
                     b.HasIndex("ProductTypeId");
 
@@ -93,9 +95,9 @@ namespace Skinet.Infrastructure.Data.Migrations
 
             modelBuilder.Entity("Skinet.Core.Entities.Product", b =>
                 {
-                    b.HasOne("Skinet.Core.Entities.ProductBrand", "ProductBrand")
+                    b.HasOne("Skinet.Core.Entities.ProductBrand", "ProductBand")
                         .WithMany()
-                        .HasForeignKey("ProductBrandId")
+                        .HasForeignKey("ProductBandId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

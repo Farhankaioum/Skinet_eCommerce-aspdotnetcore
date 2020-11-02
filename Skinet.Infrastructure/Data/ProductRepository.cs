@@ -18,14 +18,34 @@ namespace Skinet.Infrastructure.Data
 
         public async Task<Product> GetProductByIdAsync(int id)
         {
-            var product =  await _context.Products.FirstOrDefaultAsync(p => p.Id == id);
+            var product =  await _context.Products
+                .Include(b => b.ProductBrand)
+                .Include(t => t.ProductType)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
             return product;
         }
 
         public async Task<IReadOnlyList<Product>> GetProductsAsync()
         {
-            var products = await _context.Products.ToListAsync();
+            var products = await _context.Products
+                .Include(b => b.ProductBrand)
+                .Include(t => t.ProductType)
+                .ToListAsync();
+
             return products;
+        }
+
+        public async Task<IReadOnlyList<ProductBrand>> GetProductBrandsAsync()
+        {
+            var productBrands = await _context.ProductBrands.ToListAsync();
+            return productBrands;
+        }
+
+        public async Task<IReadOnlyList<ProductType>> GetProductTypesAsync()
+        {
+            var productTypes = await _context.ProductTypes.ToListAsync();
+            return productTypes;
         }
     }
 }

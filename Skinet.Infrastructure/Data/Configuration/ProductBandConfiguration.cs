@@ -7,9 +7,9 @@ using System.Text;
 
 namespace Skinet.Infrastructure.Data.Configuration
 {
-    public class ProductBandConfiguration : IEntityTypeConfiguration<ProductBand>
+    public class ProductBandConfiguration : IEntityTypeConfiguration<ProductBrand>
     {
-        public void Configure(EntityTypeBuilder<ProductBand> builder)
+        public void Configure(EntityTypeBuilder<ProductBrand> builder)
         {
             builder.Property(b => b.Name)
                 .IsRequired()
