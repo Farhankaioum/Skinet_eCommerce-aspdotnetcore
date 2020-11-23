@@ -9,17 +9,19 @@ namespace Skinet.Core.Specifications
             AddIncludeTypes();
         }
 
-        public ProductsWithTypesAndBrandsSpecification(string sort, int? brandId, int? typeId)
+        public ProductsWithTypesAndBrandsSpecification(ProductSpecParams productParams)
             : base(x => 
-                (!brandId.HasValue || x.ProductBrandId == brandId) &&
-                (!typeId.HasValue || x.ProductTypeId == typeId)
+                (!productParams.BrandId.HasValue || x.ProductBrandId == productParams.BrandId) &&
+                (!productParams.TypeId.HasValue || x.ProductTypeId == productParams.TypeId)
             )
         {
             AddIncludeTypes();
+            AddOrderBy(p => p.Name);
+            AppplyPaging(productParams.PageSize * (productParams.PageIndex - 1), productParams.PageSize);
 
-            if (!string.IsNullOrEmpty(sort))
+            if (!string.IsNullOrEmpty(productParams.Sort))
             {
-                switch (sort)
+                switch (productParams.Sort)
                 {
                     case "priceAsc":
                         AddOrderBy(p => p.Price);

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Skinet.API.Dtos;
 using Skinet.API.Errors;
+using Skinet.API.Helpers;
 using Skinet.Core.Entities;
 using Skinet.Core.Interfaces;
 using Skinet.Core.Specifications;
@@ -30,14 +31,19 @@ namespace Skinet.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProducts(string sort, int? brandId, int? typeId)
+        public async Task<ActionResult<Pagination<ProductToReturnDto>>> GetProducts([FromQuery]ProductSpecParams productParams)
         {
-            var spec = new ProductsWithTypesAndBrandsSpecification(sort, brandId, typeId);
+            var spec = new ProductsWithTypesAndBrandsSpecification(productParams);
+
+            var countSpec = new ProductWithFiltersForCountSpecification(productParams);
+
+            var totalItems = await _productRepo.CountAsync(countSpec);
 
             var products = await _productRepo.ListAsync(spec);
+
             var returnProducts = _mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductToReturnDto>>(products);
 
-            return Ok(returnProducts);
+            return Ok(new Pagination<ProductToReturnDto>(productParams.PageIndex, productParams.PageSize, totalItems, returnProducts));
         }
 
         [HttpGet("{id}")]
