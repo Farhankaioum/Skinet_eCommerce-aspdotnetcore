@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Skinet.API.Errors;
 using Skinet.API.Helpers;
 using Skinet.API.Middleware;
@@ -76,6 +77,12 @@ namespace Skinet.API
                 };
             });
 
+            // Swagger config
+            services.AddSwaggerGen(c => 
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo() { Title = "SkiNet API", Version = "v1"});
+            });
+
             services.AddAutoMapper(typeof(MappingProfiles)); // for automapper
         }
 
@@ -92,6 +99,13 @@ namespace Skinet.API
             app.UseStaticFiles();
 
             app.UseAuthorization();
+
+            // Swagger config
+            app.UseSwagger();
+            app.UseSwaggerUI(c => 
+            { 
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "SkiNet API v1"); 
+            });
 
             app.UseEndpoints(endpoints =>
             {

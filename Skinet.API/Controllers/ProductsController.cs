@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Skinet.API.Dtos;
+using Skinet.API.Errors;
 using Skinet.Core.Interfaces;
 
 namespace Skinet.API.Controllers
@@ -26,9 +28,14 @@ namespace Skinet.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse), StatusCodes.Status404NotFound)]
         public async  Task<IActionResult> GetProduct(int id)
         {
             var product = await _productRepo.GetProductByIdAsync(id);
+
+            if (product == null)
+                return NotFound(new ApiResponse(404));
 
             var returnProduct = _mapper.Map<ProductToReturnDto>(product);
 
