@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Skinet.API.Errors;
+using Skinet.API.Extensions;
 using Skinet.API.Helpers;
 using Skinet.API.Middleware;
 using Skinet.Infrastructure;
@@ -40,10 +41,8 @@ namespace Skinet.API
             var connectionString = Configuration.GetConnectionString(connectionStringName);
             var migrationAssemblyName = typeof(Startup).Assembly.FullName;
 
-
             builder.RegisterModule(new InfrastructureModule(connectionString, migrationAssemblyName));
             builder.RegisterModule(new APIModule(connectionString, migrationAssemblyName));
-
         }
 
         public void ConfigureServices(IServiceCollection services)
@@ -58,30 +57,8 @@ namespace Skinet.API
             services.AddControllers();
             services.AddOptions();
 
-            // configuring validation error
-            services.Configure<ApiBehaviorOptions>(options => 
-            {
-                options.InvalidModelStateResponseFactory = actionContext =>
-                {
-                    var errors = actionContext.ModelState
-                        .Where(e => e.Value.Errors.Count > 0)
-                        .SelectMany(x => x.Value.Errors)
-                        .Select(x => x.ErrorMessage).ToArray();
-
-                    var errorResponse = new ApiValidationErrorResponse
-                    {
-                        Errors = errors
-                    };
-
-                    return new BadRequestObjectResult(errorResponse);
-                };
-            });
-
-            // Swagger config
-            services.AddSwaggerGen(c => 
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo() { Title = "SkiNet API", Version = "v1"});
-            });
+            services.AddApplicationServices(); // custom extension method for registering few services
+            services.AddSwaggerDocumentation(); // Swagger config using custom extension method
 
             services.AddAutoMapper(typeof(MappingProfiles)); // for automapper
         }
@@ -100,12 +77,8 @@ namespace Skinet.API
 
             app.UseAuthorization();
 
-            // Swagger config
-            app.UseSwagger();
-            app.UseSwaggerUI(c => 
-            { 
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "SkiNet API v1"); 
-            });
+            // Swagger config using custom extension method
+            app.UseSwaggerDocumentation();
 
             app.UseEndpoints(endpoints =>
             {
