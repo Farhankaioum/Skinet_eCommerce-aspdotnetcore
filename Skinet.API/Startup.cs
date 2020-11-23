@@ -3,14 +3,17 @@ using Autofac.Extensions.DependencyInjection;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Skinet.API.Errors;
 using Skinet.API.Helpers;
 using Skinet.API.Middleware;
 using Skinet.Infrastructure;
 using Skinet.Infrastucture.Data;
+using System.Linq;
 
 namespace Skinet.API
 {
@@ -53,6 +56,25 @@ namespace Skinet.API
 
             services.AddControllers();
             services.AddOptions();
+
+            // configuring validation error
+            services.Configure<ApiBehaviorOptions>(options => 
+            {
+                options.InvalidModelStateResponseFactory = actionContext =>
+                {
+                    var errors = actionContext.ModelState
+                        .Where(e => e.Value.Errors.Count > 0)
+                        .SelectMany(x => x.Value.Errors)
+                        .Select(x => x.ErrorMessage).ToArray();
+
+                    var errorResponse = new ApiValidationErrorResponse
+                    {
+                        Errors = errors
+                    };
+
+                    return new BadRequestObjectResult(errorResponse);
+                };
+            });
 
             services.AddAutoMapper(typeof(MappingProfiles)); // for automapper
         }
