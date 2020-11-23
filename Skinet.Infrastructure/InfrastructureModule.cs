@@ -20,6 +20,9 @@ namespace Skinet.Infrastructure
             builder.RegisterType<ProductRepository>().As<IProductRepository>()
                 .InstancePerLifetimeScope();
 
+            builder.RegisterGeneric(typeof(GenericRepository<>))
+               .As(typeof(IGenericRepository<>))
+               .InstancePerLifetimeScope();
 
             base.Load(builder);
         }

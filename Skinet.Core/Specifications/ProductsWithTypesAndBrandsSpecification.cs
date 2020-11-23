@@ -1,7 +1,4 @@
 ﻿using Skinet.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Skinet.Core.Specifications
 {
@@ -10,6 +7,27 @@ namespace Skinet.Core.Specifications
         public ProductsWithTypesAndBrandsSpecification()
         {
             AddIncludeTypes();
+        }
+
+        public ProductsWithTypesAndBrandsSpecification(string sort)
+        {
+            AddIncludeTypes();
+
+            if (!string.IsNullOrEmpty(sort))
+            {
+                switch (sort)
+                {
+                    case "priceAsc":
+                        AddOrderBy(p => p.Price);
+                        break;
+                    case "priceDesc":
+                        AddOrderByDecending(p => p.Price);
+                        break;
+                    default:
+                        AddOrderBy(n => n.Name);
+                        break;
+                }
+            }
         }
 
         public ProductsWithTypesAndBrandsSpecification(int id)
