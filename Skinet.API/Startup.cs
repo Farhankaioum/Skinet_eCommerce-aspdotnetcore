@@ -1,11 +1,13 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Skinet.API.Helpers;
 using Skinet.Infrastructure;
 using Skinet.Infrastucture.Data;
 
@@ -50,6 +52,8 @@ namespace Skinet.API
 
             services.AddControllers();
             services.AddOptions();
+
+            services.AddAutoMapper(typeof(MappingProfiles)); // for automapper
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Skinet.API.Dtos;
 using Skinet.Core.Interfaces;
 
 namespace Skinet.API.Controllers
@@ -9,10 +11,12 @@ namespace Skinet.API.Controllers
     public class ProductsController : ControllerBase
     {
         private readonly IProductRepository _productRepo;
+        private readonly IMapper _mapper;
 
-        public ProductsController(IProductRepository productRepo)
+        public ProductsController(IProductRepository productRepo, IMapper mapper)
         {
             _productRepo = productRepo;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -24,11 +28,13 @@ namespace Skinet.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async  Task<IActionResult> GetProductById(int id)
+        public async  Task<IActionResult> GetProduct(int id)
         {
             var product = await _productRepo.GetProductByIdAsync(id);
 
-            return Ok(product);
+            var returnProduct = _mapper.Map<ProductToReturnDto>(product);
+
+            return Ok(returnProduct);
         }
 
         [HttpGet("brands")]
