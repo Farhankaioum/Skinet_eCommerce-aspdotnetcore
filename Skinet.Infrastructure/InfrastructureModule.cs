@@ -20,6 +20,7 @@ namespace Skinet.Infrastructure
             builder.RegisterType<ProductRepository>().As<IProductRepository>()
                 .InstancePerLifetimeScope();
 
+
             base.Load(builder);
         }
     }

@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Skinet.Core.Interfaces;
-using Skinet.Infrastucture.Data;
 
 namespace Skinet.API.Controllers
 {
@@ -15,17 +8,17 @@ namespace Skinet.API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IProductRepository _repository;
+        private readonly IProductRepository _productRepo;
 
-        public ProductsController(IProductRepository repository)
+        public ProductsController(IProductRepository productRepo)
         {
-            _repository = repository;
+            _productRepo = productRepo;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetProducts()
         {
-            var products = await _repository.GetProductsAsync();
+            var products = await _productRepo.GetProductsAsync();
 
             return Ok(products);
         }
@@ -33,7 +26,7 @@ namespace Skinet.API.Controllers
         [HttpGet("{id}")]
         public async  Task<IActionResult> GetProductById(int id)
         {
-            var product = await _repository.GetProductByIdAsync(id);
+            var product = await _productRepo.GetProductByIdAsync(id);
 
             return Ok(product);
         }
@@ -41,7 +34,7 @@ namespace Skinet.API.Controllers
         [HttpGet("brands")]
         public async Task<IActionResult> GetProductBrands()
         {
-            var productBrands = await _repository.GetProductBrandsAsync();
+            var productBrands = await _productRepo.GetProductBrandsAsync();
 
             return Ok(productBrands);
         }
@@ -49,7 +42,7 @@ namespace Skinet.API.Controllers
         [HttpGet("types")]
         public async Task<IActionResult> GetProductTypes()
         {
-            var productTypes = await _repository.GetProductTypesAsync();
+            var productTypes = await _productRepo.GetProductTypesAsync();
 
             return Ok(productTypes);
         }
