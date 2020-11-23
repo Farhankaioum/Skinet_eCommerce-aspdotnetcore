@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Skinet.API.Helpers;
+using Skinet.API.Middleware;
 using Skinet.Infrastructure;
 using Skinet.Infrastucture.Data;
 
@@ -60,11 +61,7 @@ namespace Skinet.API
         {
             AutofacContainer = app.ApplicationServices.GetAutofacRoot();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
-
+            app.UseMiddleware<ExceptionMiddleware>(); // custom middleware for handle exception
             app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
             app.UseHttpsRedirection();
