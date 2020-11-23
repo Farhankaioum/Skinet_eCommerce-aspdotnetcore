@@ -60,6 +60,15 @@ namespace Skinet.API
             services.AddApplicationServices(); // custom extension method for registering few services
             services.AddSwaggerDocumentation(); // Swagger config using custom extension method
 
+            // CORS
+            services.AddCors(opt => 
+            {
+                opt.AddPolicy("CorsPolicy", policy => 
+                {
+                    policy.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200");
+                });
+            });
+
             services.AddAutoMapper(typeof(MappingProfiles)); // for automapper
         }
 
@@ -74,6 +83,9 @@ namespace Skinet.API
 
             app.UseRouting();
             app.UseStaticFiles();
+
+            // CORS
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 
